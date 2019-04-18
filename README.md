@@ -1,2 +1,2 @@
 # MusicPlayer
-A music player based on Netwease Cloud Music.
+A music player based on Netease Cloud Music.
