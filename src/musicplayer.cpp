@@ -1,5 +1,6 @@
 #include "musicplayer.h"
 #include "ui_musicplayer.h"
+#include "dbcontrol.h"
 
 #include <QDebug>
 #include <QString>
@@ -15,6 +16,9 @@ MusicPlayer::MusicPlayer(QWidget *parent) :
     ui(new Ui::MusicPlayer)
 {
     ui->setupUi(this);
+
+    DBControl::instance()->connectDb();
+
     connect(ui->selectLocalMusicBtn,SIGNAL(clicked()),this,SLOT(getFile()));
     //connect(ui->playButton,SIGNAL(clicked()),this,SLOT(on_playButton_clicked()));
 }
@@ -39,7 +43,6 @@ void MusicPlayer::getFile()
 
 void MusicPlayer::playFile(const QString& filePath)
 {
-    DEBUG(mediaPlayer.state());
     if (mediaPlayer.state() != QMediaPlayer::PlayingState)
     {
         bool ok;
