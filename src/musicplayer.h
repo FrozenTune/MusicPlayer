@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMediaPlayer>
+#include <QTimer>
 
 namespace Ui {
 class MusicPlayer;
@@ -25,9 +26,17 @@ public slots:
 private slots:
     void on_playButton_clicked();
 
+    void updateDuration(qint64 duration);
+    void updatePosition(qint64 position);
+
+    void on_playVolume_Silder_valueChanged(int volume);
+    void on_playProgress_Slider_sliderReleased();
+
 private:
+    void initUI();
     Ui::MusicPlayer *ui;    //ui所有控件的调用
     QMediaPlayer mediaPlayer;
+    QTimer *timer;
 };
 
 #endif // MUSICPLAYER_H
