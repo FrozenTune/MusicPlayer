@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         musicplayer.cpp \
-    dbcontrol.cpp
+    dbcontrol.cpp \
+    song.cpp
 
 HEADERS += \
         musicplayer.h \
-    dbcontrol.h
+    dbcontrol.h \
+    song.h
 
 FORMS += \
         musicplayer.ui

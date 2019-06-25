@@ -57,3 +57,8 @@ void DBControl::disconnectDb()
 {
     if (db.isOpen()) db.close();
 }
+
+void DBControl::initQueryModel(QSqlQueryModel *myModel,QSqlDatabase *db,const QString sqlQuery)
+{
+    if (db->isOpen()) myModel->setQuery(sqlQuery);
+}
