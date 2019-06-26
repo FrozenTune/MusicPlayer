@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         musicplayer.cpp \
     dbcontrol.cpp \
-    song.cpp
+    songinfo.cpp \
+    songutils.cpp
 
 HEADERS += \
         musicplayer.h \
     dbcontrol.h \
-    song.h
+    songinfo.h \
+    songutils.h
 
 FORMS += \
         musicplayer.ui

@@ -6,7 +6,7 @@
 #include <QMediaPlaylist>
 #include <QTimer>
 #include <QSqlTableModel>
-#include <song.h>
+#include <songutils.h>
 
 namespace Ui {
 class MusicPlayer;
@@ -26,7 +26,7 @@ public slots:
     void getFile();
     void playFile(const QString& filePath);
 
-    void addSongToList(song *mySong);
+    void addSongToList(SongInfo *songInfo);
 
 private slots:
     void on_playButton_clicked();
@@ -37,6 +37,10 @@ private slots:
     void on_playVolume_Silder_valueChanged(int volume);
     void on_playProgress_Silder_sliderReleased();
 
+    void on_selectLocalMusicBtn_clicked();
+
+    void on_selectLocalMusicBtn_clicked(bool checked);
+
 private:
     void initUI();
 
@@ -44,7 +48,7 @@ private:
     QMediaPlayer mediaPlayer;
     QMediaPlaylist *mediaPlaylist;
 
-    song *mySong;   //存放处理歌曲信息用
+    SongInfo songInfo;   //存放处理歌曲信息用
 };
 
 #endif // MUSICPLAYER_H

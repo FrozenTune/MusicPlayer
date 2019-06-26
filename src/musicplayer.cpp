@@ -1,7 +1,7 @@
 #include "musicplayer.h"
 #include "ui_musicplayer.h"
 #include "dbcontrol.h"
-#include <song.h>
+#include <songutils.h>
 
 #include <QDebug>
 #include <QString>
@@ -48,7 +48,8 @@ void MusicPlayer::getFile()
     if (!s_file.isEmpty())
     {
         ui->filePath->setText(s_file);
-        addSongToList(mySong->getSong(s_file));
+        //尝试获取歌曲信息,若为成功则加入列表
+        if (SongUtils::getSongInfo(s_file,&songInfo)) addSongToList(&songInfo);
         mediaPlaylist->addMedia(QUrl::fromLocalFile(s_file));
     }
 }
@@ -77,6 +78,7 @@ void MusicPlayer::playFile(const QString& filePath)
 
 void MusicPlayer::updateDuration(qint64 duration)           //根据文件更新总进度
 {
+    DEBUG(duration);
     ui->playProgress_Silder->setRange(0,duration);          //设置总时长
     ui->playProgress_Silder->setEnabled(duration > 0);      //若时长大于0则可用
     ui->playProgress_Silder->setPageStep(duration / 10);    //设置步长
@@ -87,8 +89,8 @@ void MusicPlayer::updatePosition(qint64 position)           //更新进度
     ui->playProgress_Silder->setValue(position);
     //QTime::QTime(int h, int m, int s = 0, int ms = 0)
     DEBUG(position);
-    ui->durationLabel->setText(song::convertSongLengthToString(position));
-    DEBUG(song::convertSongLengthToString(position));
+    ui->durationLabel->setText(SongUtils::convertSongLengthToString(position));
+    DEBUG(SongUtils::convertSongLengthToString(position));
 }
 
 void MusicPlayer::on_playVolume_Silder_valueChanged(int volume)
@@ -141,19 +143,17 @@ void MusicPlayer::initUI()
 
 /********************** 歌曲显示列操作 ***********************/
 
-void MusicPlayer::addSongToList(song *mySong)
+void MusicPlayer::addSongToList(SongInfo *songInfo)
 {
-    QTableWidgetItem *song_path_item=new QTableWidgetItem(mySong->getPath());
-    QTableWidgetItem *song_artist_item=new QTableWidgetItem(mySong->getArtist());
-    QTableWidgetItem *song_title_item=new QTableWidgetItem(mySong->getTitle());
-    QTableWidgetItem *song_length_item=new QTableWidgetItem(mySong->getLength_ms());
+    QTableWidgetItem *song_path_item=new QTableWidgetItem(songInfo->getPath());
+    QTableWidgetItem *song_artist_item=new QTableWidgetItem(songInfo->getArtist());
+    QTableWidgetItem *song_title_item=new QTableWidgetItem(songInfo->getTitle());
+    QTableWidgetItem *song_length_item=new QTableWidgetItem(SongUtils::convertSongLengthToString(songInfo->getLength_ms()));
 
-    ui->songList_TabelWidget->insertRow(ui->songList_TabelWidget->rowCount());
-    ui->songList_TabelWidget->setItem(ui->songList_TabelWidget->rowCount(),0,song_path_item);
-    ui->songList_TabelWidget->setItem(ui->songList_TabelWidget->rowCount(),1,song_artist_item);
-    ui->songList_TabelWidget->setItem(ui->songList_TabelWidget->rowCount(),2,song_title_item);
-    ui->songList_TabelWidget->setItem(ui->songList_TabelWidget->rowCount(),3,song_length_item);
+    int i=ui->songList_TabelWidget->rowCount();
+    ui->songList_TabelWidget->insertRow(i);
+    ui->songList_TabelWidget->setItem(i,0,song_path_item);
+    ui->songList_TabelWidget->setItem(i,1,song_artist_item);
+    ui->songList_TabelWidget->setItem(i,2,song_title_item);
+    ui->songList_TabelWidget->setItem(i,3,song_length_item);
 }
-
-
-
